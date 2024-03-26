@@ -13,7 +13,7 @@ public class OAuthFlowInitiation {
     private static final String GOOGLE_AUTH_URL = "https://accounts.google.com/o/oauth2/v2/auth";
     private static final String YOUR_CLIENT_ID = "581068937963-m8605c744a3bm0e2g7fb0p9f90eht4h3.apps.googleusercontent.com";
     private static final String REDIRECT_URI = "http://localhost:8080/login/oauth2/code/google";
-    private static final String GOOGLE_REQUIRED_SCOPES = "https://www.googleapis.com/auth/youtube.upload"  +  " " + "https://www.googleapis.com/auth/youtube.readonly";
+    private static final String GOOGLE_REQUIRED_SCOPES = "https://www.googleapis.com/auth/youtube.upload"  +  " " + "https://www.googleapis.com/auth/youtube.readonly"+ " " +"https://www.googleapis.com/auth/userinfo.email"+ " " + "https://www.googleapis.com/auth/userinfo.profile";
 
     public  String getAuthorizationUrl() throws Exception {
         OkHttpClient client = new OkHttpClient();

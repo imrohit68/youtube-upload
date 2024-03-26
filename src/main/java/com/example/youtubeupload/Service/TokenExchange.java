@@ -52,6 +52,20 @@ public class TokenExchange {
 
         String accessToken = (String) responseMap.get("access_token");
         String refreshToken = (String) responseMap.get("refresh_token");
+        String userInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
+        Request userInfoRequest = new Request.Builder()
+                .url(userInfoUrl)
+                .header("Authorization", "Bearer " + accessToken)
+                .build();
+
+        Response userInfoResponse = client.newCall(userInfoRequest).execute();
+        String userInfoJsonResponse = userInfoResponse.body().string();
+        Map userInfoMap = gson.fromJson(userInfoJsonResponse, Map.class);
+
+        String userEmail = (String) userInfoMap.get("email");
+        String userName = (String) userInfoMap.get("name");
+        System.out.println(userEmail);
+        System.out.println(userName);
 
         getChannelInfo(accessToken);
         return "Successfully obtained tokens: access_token = " + accessToken + ", refresh_token = " + refreshToken;
