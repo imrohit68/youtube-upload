@@ -1,20 +1,23 @@
 package com.example.youtubeupload.Service;
 
+import com.example.youtubeupload.Entity.ChannelOwner;
+import com.example.youtubeupload.Entity.Editor;
+import com.example.youtubeupload.Payloads.UserInfo;
+import com.example.youtubeupload.Repository.ChannelOwnerRepo;
+import com.example.youtubeupload.Repository.EditorRepo;
+import com.example.youtubeupload.Security.TokenIntrospector;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class TokenExchange {
 
     private static final String GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
@@ -23,8 +26,12 @@ public class TokenExchange {
     private static final String REDIRECT_URI = "http://localhost:8080/login/oauth2/code/google";
     private static final String AUTHORIZATION_CODE_GRANT_TYPE = "authorization_code";
 
+    private final ChannelOwnerRepo channelOwnerRepo;
+    private final EditorRepo editorRepo;
+    private final TokenIntrospector tokenIntrospector;
 
-    public  String exchangeCodeForTokens(String authorizationCode) throws Exception {
+
+    public UserInfo exchangeCodeForTokens(String authorizationCode) throws Exception {
         OkHttpClient client = new OkHttpClient();
 
         HttpUrl urlBuilder = Objects.requireNonNull(HttpUrl.parse(GOOGLE_TOKEN_URL))
@@ -64,13 +71,21 @@ public class TokenExchange {
 
         String userEmail = (String) userInfoMap.get("email");
         String userName = (String) userInfoMap.get("name");
-        System.out.println(userEmail);
-        System.out.println(userName);
-
-        getChannelInfo(accessToken);
-        return "Successfully obtained tokens: access_token = " + accessToken + ", refresh_token = " + refreshToken;
+        String scope = tokenIntrospector.getTokenScope(accessToken);
+        System.out.println(scope);
+        System.out.println(scope.length());
+        if(scope.length()>90){
+            ChannelOwner channelOwner = getChannelInfo(accessToken);
+            channelOwner.setEmail(userEmail);
+            channelOwner.setRefreshToken(refreshToken);
+            channelOwnerRepo.save(channelOwner);
+        }else{
+            Editor editor = new Editor(userEmail,null);
+            editorRepo.save(editor);
+        }
+        return new UserInfo(userEmail,userName);
     }
-    public static  void getChannelInfo(String accessToken) throws IOException {
+    public static  ChannelOwner getChannelInfo(String accessToken) throws IOException {
         String apiKey = "AIzaSyBoYPeqZ3q-fpslHQ4xhAGy72EnmbJ9Yxw";
 
         String urlString = "https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true&key=" + apiKey;
@@ -90,15 +105,10 @@ public class TokenExchange {
         scanner.useDelimiter("\\A");
         String responseJson = scanner.next();
         scanner.close();
-
         Map<String, Object> channelInfo = parseJson(responseJson);
-
-        if (channelInfo != null) {
-            System.out.println("Channel ID: " + channelInfo.get("id"));
-            System.out.println("Channel Title: " + ((Map<String, Object>) channelInfo.get("snippet")).get("title"));
-        } else {
-            System.out.println("Channel information not found.");
-        }
+        String id = (String) channelInfo.get("id");
+        String channelName = (String)((Map<String, Object>) channelInfo.get("snippet")).get("title");
+        return new ChannelOwner(null,id,channelName,null,null);
     }
 
     private static Map<String, Object> parseJson(String json) {
