@@ -19,6 +19,6 @@ public class ChannelOwner {
     private String channelId;
     private String channelName;
     private String refreshToken;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Editor> editors;
 }

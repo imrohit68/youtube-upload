@@ -74,12 +74,12 @@ public class TokenExchange {
         String scope = tokenIntrospector.getTokenScope(accessToken);
         System.out.println(scope);
         System.out.println(scope.length());
-        if(scope.length()>90){
+        if(scope.length()>90&&!channelOwnerRepo.existsAllByEmail(userEmail)&&!editorRepo.existsAllByEmail(userEmail)){
             ChannelOwner channelOwner = getChannelInfo(accessToken);
             channelOwner.setEmail(userEmail);
             channelOwner.setRefreshToken(refreshToken);
             channelOwnerRepo.save(channelOwner);
-        }else{
+        }else if(scope.length()>90&&!editorRepo.existsAllByEmail(userEmail)&&!channelOwnerRepo.existsAllByEmail(userEmail)){
             Editor editor = new Editor(userEmail,null);
             editorRepo.save(editor);
         }

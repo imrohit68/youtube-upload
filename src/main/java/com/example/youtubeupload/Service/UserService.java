@@ -14,7 +14,7 @@ public class UserService {
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     public SuccessResponse createUser(User user, String role){
-        if(role.equals("OWNER")){
+        if(role.equals("Owner")){
             String encoded = passwordEncoder.encode(user.getPassword());
             user.setPassword(encoded);
             user.setRole(User.ROLE.OWNER);

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EditorRepo extends JpaRepository<Editor,String> {
+    boolean existsAllByEmail(String userEmail);
 }

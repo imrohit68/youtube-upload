@@ -27,7 +27,7 @@ public class Config {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests
                         (requests-> requests.requestMatchers
-                                ("getAccess/**","login/oauth2/code/google","login","createUser").
+                                ("getAccess/**","login/oauth2/code/google","login","createUser/**","login").
                                 permitAll().anyRequest().authenticated())
                 .exceptionHandling(ex-> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

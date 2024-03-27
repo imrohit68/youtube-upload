@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ChannelOwnerRepo extends JpaRepository<ChannelOwner,String> {
+    boolean existsAllByEmail(String email);
 }

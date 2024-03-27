@@ -19,6 +19,6 @@ import java.util.List;
 public class Editor {
     @Id
     private String email;
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<ChannelOwner> channelOwners;
 }
