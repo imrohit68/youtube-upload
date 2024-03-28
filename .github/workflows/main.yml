@@ -31,9 +31,5 @@ jobs:
         run: echo "${{ secrets.SSH_KEY}}" >> jenkins.pem
       - name: Give permissions
         run: chmod 600 jenkins.pem
-      - name : Add SSH Key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ./jenkins.pem
       - name: Execute Commands on Remote Server
         run:  ssh -o StrictHostKeyChecking=no -i jenkins.pem ubuntu@ec2-3-82-251-117.compute-1.amazonaws.com "cd actions-runner/ && ./run.sh"
