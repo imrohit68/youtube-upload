@@ -28,4 +28,4 @@ jobs:
         with:
           host: 3.82.251.117
           username: ubuntu
-          privateKey: ${{SSH_KEY}}
+          privateKey: ${{secrets.SSH_KEY}}
