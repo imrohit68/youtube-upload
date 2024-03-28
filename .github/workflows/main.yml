@@ -22,13 +22,15 @@ jobs:
       - name: Build docker image
         run: docker build -t imrohit68/youtube-upload .
       - name: Publish image to docker hub
-        run: docker push imrohit68/print-app-poc:latest
+        run: docker push imrohit68/youtube-upload:latest
 
   connect:
     runs-on: [ubuntu-latest]
     steps:
       - name: Key Gen
         run: echo "${{ secrets.SSH_KEY}}" > jenkins.pem
+      - name: Give permissions
+        run: chmod 600 jenkins.pem
       - name : Add SSH Key
         uses: webfactory/ssh-agent@v0.5.3
         with:
