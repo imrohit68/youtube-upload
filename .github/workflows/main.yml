@@ -28,7 +28,7 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: Key Gen
-        run: echo "${{ secrets.SSH_KEY}}" > jenkins.pem
+        run: echo "${{ secrets.SSH_KEY}}" >> jenkins.pem
       - name: Give permissions
         run: chmod 600 jenkins.pem
       - name : Add SSH Key
