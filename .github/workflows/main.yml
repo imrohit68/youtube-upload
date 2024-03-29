@@ -33,4 +33,4 @@ jobs:
       - name: Give permissions
         run: chmod 600 jenkins.pem
       - name: Execute Commands on Remote Server
-        run:  ssh -o StrictHostKeyChecking=no -i jenkins.pem ubuntu@ec2-3-82-251-117.compute-1.amazonaws.com "sudo docker image prune -a -f && sudo docker pull imrohit68/youtube-upload:latest && sudo docker rm -f youtube-upload-container && sudo docker run -d -p 8080:8080 --name youtube-upload-container -e spring_profiles_active=prod imrohit68/youtube-upload "
+        run:  ssh -o StrictHostKeyChecking=no -i jenkins.pem ubuntu@ec2-52-71-110-121.compute-1.amazonaws.com "sudo docker image prune -a -f && sudo docker pull imrohit68/youtube-upload:latest && sudo docker rm -f youtube-upload-container && sudo docker run -d -p 8080:8080 --name youtube-upload-container -e spring_profiles_active=prod imrohit68/youtube-upload "

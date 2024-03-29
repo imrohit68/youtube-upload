@@ -31,4 +31,31 @@ public class ChannelOwnerService {
 
         return new SuccessResponse("Editor Added Successfully",true);
     }
+    public List<Editor> getEditorByOwner(String email){
+        ChannelOwner channelOwner = channelOwnerRepo.findById(email).orElseThrow(()-> new ResourceNotFoundException("Owner","Email",email));
+        return channelOwner.getEditors();
+    }
+    public SuccessResponse deleteEditor(String ownerEmail,String editorEmail){
+        ChannelOwner channelOwner = channelOwnerRepo.findById(ownerEmail).orElseThrow(()->new ResourceNotFoundException("Channel Owner","email",ownerEmail));
+        Editor editor = editorRepo.findById(editorEmail).orElseThrow(()-> new ResourceNotFoundException("Editor","email",editorEmail));
+        List<Editor> editors = channelOwner.getEditors();
+        for (Editor x : editors){
+            if(x.getEmail().equals(editor.getEmail())){
+                editors.remove(x);
+                break;
+            }
+        }
+        channelOwner.setEditors(editors);
+        channelOwnerRepo.save(channelOwner);
+        List<ChannelOwner> channelOwners = editor.getChannelOwners();
+        for (ChannelOwner x: channelOwners){
+            if(x.getEmail().equals(ownerEmail)){
+                channelOwners.remove(x);
+                break;
+            }
+        }
+        editor.setChannelOwners(channelOwners);
+        editorRepo.save(editor);
+        return new SuccessResponse("Editor Removed Successfully",true);
+    }
 }
