@@ -9,6 +9,7 @@ import com.example.youtubeupload.Security.TokenIntrospector;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,9 +22,14 @@ import java.util.*;
 public class TokenExchange {
 
     private static final String GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
-    private static final String YOUR_CLIENT_ID = "581068937963-m8605c744a3bm0e2g7fb0p9f90eht4h3.apps.googleusercontent.com";
-    private static final String YOUR_CLIENT_SECRET = "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";
-    private static final String REDIRECT_URI = "http://localhost:8080/login/oauth2/code/google";
+    @Value("${google.client.id}")
+    private String clientId;
+
+    @Value("${google.client.secret}")
+    private String clientSecret;
+
+    @Value("${google.redirect.uri}")
+    private String redirectUri;
     private static final String AUTHORIZATION_CODE_GRANT_TYPE = "authorization_code";
 
     private final ChannelOwnerRepo channelOwnerRepo;
@@ -39,9 +45,9 @@ public class TokenExchange {
                 .build();
 
         RequestBody formBody = new FormBody.Builder()
-                .addEncoded("client_id", YOUR_CLIENT_ID)
-                .addEncoded("client_secret", YOUR_CLIENT_SECRET)
-                .addEncoded("redirect_uri", REDIRECT_URI)
+                .addEncoded("client_id", clientId)
+                .addEncoded("client_secret", clientSecret)
+                .addEncoded("redirect_uri", redirectUri)
                 .addEncoded("grant_type", AUTHORIZATION_CODE_GRANT_TYPE)
                 .addEncoded("code", authorizationCode)
                 .build();
