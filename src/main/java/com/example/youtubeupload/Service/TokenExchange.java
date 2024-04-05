@@ -35,6 +35,7 @@ public class TokenExchange {
     private final ChannelOwnerRepo channelOwnerRepo;
     private final EditorRepo editorRepo;
     private final TokenIntrospector tokenIntrospector;
+    private final TokenEncryptionService tokenEncryptionService;
 
 
     public UserInfo exchangeCodeForTokens(String authorizationCode) throws Exception {
@@ -83,7 +84,7 @@ public class TokenExchange {
         if(scope.length()>90&&!channelOwnerRepo.existsAllByEmail(userEmail)&&!editorRepo.existsAllByEmail(userEmail)){
             ChannelOwner channelOwner = getChannelInfo(accessToken);
             channelOwner.setEmail(userEmail);
-            channelOwner.setRefreshToken(refreshToken);
+            channelOwner.setRefreshToken(tokenEncryptionService.encryptToken(refreshToken));
             channelOwnerRepo.save(channelOwner);
         }else if(scope.length()>90&&!editorRepo.existsAllByEmail(userEmail)&&!channelOwnerRepo.existsAllByEmail(userEmail)){
             Editor editor = new Editor(userEmail,null);

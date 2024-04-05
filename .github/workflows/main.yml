@@ -61,4 +61,5 @@ jobs:
           -e google.client.secret='${{ secrets.CLIENT_SECRET }}' \
           -e google.redirect.uri='${{ secrets.REDIRECT_URI }}' \
           -e algorithm.secret='${{ secrets.ALGO_SECRET }}' \
+          -e encryption.key='${{ secrets.ENCRYPTION_KEY }}' \
           -e spring_profiles_active=prod imrohit68/youtube-upload"
