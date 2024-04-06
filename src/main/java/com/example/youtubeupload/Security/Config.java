@@ -27,7 +27,7 @@ public class Config {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests
                         (requests-> requests.requestMatchers
-                                ("getAccess/**","login/oauth2/code/google","login","createUser/**","login").
+                                ("getAccess/**","login/oauth2/code/google","login","createUser/**","login","/swagger-ui/**","/api/v1/auth/**","/v3/api-docs/**", "/v3/api-docs.yaml","/swagger-ui.html").
                                 permitAll().anyRequest().authenticated())
                 .exceptionHandling(ex-> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
