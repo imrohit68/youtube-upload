@@ -16,5 +16,9 @@ In addition to the existing features like encryption for storing access tokens, 
 ## Project Goals
 
 The enhanced backend project aims to optimize video management on channels by introducing an automated video approval workflow. This workflow will enable channel owners to review video content before publication, ensuring quality control and adherence to channel guidelines. By leveraging existing security features such as encryption and JWT, the project maintains a high level of data integrity and user privacy throughout the approval process.
+## Workflows
+
+-**SignUp flow:**
+<img src="https://github.com/imrohit68/project-images/blob/main/signup.jpg?raw=true">
 
 **API Documentation Link:** [Swagger UI](http://rohitprojects.me:8080/swagger-ui/index.html#/)
