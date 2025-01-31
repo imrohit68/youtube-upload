@@ -52,10 +52,10 @@ jobs:
         run: chmod 600 jenkins.pem
       - name: Execute Commands on Remote Server
         run: |
-          ssh -o StrictHostKeyChecking=no -i jenkins.pem ubuntu@ec2-52-71-110-121.compute-1.amazonaws.com "sudo docker image prune -a -f && \
+          ssh -o StrictHostKeyChecking=no -i jenkins.pem ubuntu@ec2-13-203-76-146.ap-south-1.compute.amazonaws.com "sudo docker image prune -a -f && \
           sudo docker pull imrohit68/youtube-upload:latest && \
           sudo docker rm -f youtube-upload-container && \
-          sudo docker run -d -p 8080:8080 --name youtube-upload-container \
+          sudo docker run -d -p 8090:8080 --name youtube-upload-container \
           -e spring.datasource.password='${{ secrets.DATABASE_PASSWORD }}' \
           -e google.client.id='${{ secrets.CLIENT_ID }}' \
           -e google.client.secret='${{ secrets.CLIENT_SECRET }}' \
